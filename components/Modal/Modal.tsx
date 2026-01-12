@@ -1,27 +1,25 @@
 'use client'
 
 import css from "./Modal.module.css";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 type Prop = {
   children: React.ReactNode;
+  onClose: () => void;
 };
 
-export default function Modal({children}:Prop) {
-  const router = useRouter()
-  const close = () => router.back();
+export default function Modal({children, onClose}:Prop) {
 
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
-      close();
+      onClose();
     }
 }
 
  useEffect(() => {
 	  const handleKeyDown = (e: KeyboardEvent) => {
 	    if (e.key === "Escape") {
-	      close();
+	      onClose();
 	    }
 	  };
 	
@@ -32,7 +30,7 @@ export default function Modal({children}:Prop) {
 	    document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
 	  };
-	}, [router]);
+	}, [onClose]);
 
   return (
   <div className={css.backdrop} onClick={handleBackdropClick}>

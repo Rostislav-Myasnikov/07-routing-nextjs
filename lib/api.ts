@@ -6,17 +6,25 @@ export interface FetchNoteResponse {
   totalPages: number;
 }
 
+type FetchNotesParams = {
+  tag?: string;
+  query?: string;
+  page?: number;
+};
+
 const BASE_URL = "https://notehub-public.goit.study/api/notes";
 
-export async function fetchNotes(
-  query: string,
-  page: number
-): Promise<FetchNoteResponse> {
+export async function fetchNotes({
+  tag,
+  query,
+  page = 1,
+}: FetchNotesParams): Promise<FetchNoteResponse> {
   const res = await axios.get<FetchNoteResponse>(`${BASE_URL}`, {
     params: {
       page,
       perPage: 12,
       ...(query && { search: query }),
+      ...(tag && { tag }),
     },
     headers: {
       Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
@@ -53,13 +61,3 @@ export async function fetchNoteById(id: string): Promise<Note> {
   return res.data;
 }
 
-export async function fetchNoteByTag(tag?: string): Promise<FetchNoteResponse> {
-  const res = await axios.get<FetchNoteResponse>(`${BASE_URL}`, {
-    params: tag ? { tag: tag } : undefined,
-    headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
-    },
-  });
-
-  return res.data;
-}

@@ -1,23 +1,63 @@
-'use client'
+"use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import { fetchNoteByTag } from "@/lib/api";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { fetchNotes } from "@/lib/api";
 import NoteList from "@/components/NoteList/NoteList";
+import { useState } from "react";
+import SearchBox from "@/components/SearchBox/SearchBox";
+import { Toaster } from "react-hot-toast";
+import Pagination from "@/components/Pagination/Pagination";
+import AddNoteModal from "@/components/AddNoteModal/AddNoteModal";
+import css from "@/app/notes/notes.module.css";
 
-export default function NoteFilterClient() {
+type Prop = {
+  tag?: string;
+};
 
-    const {slug} = useParams<{slug: string[]}>();
-    const category = slug[0] === 'all' ? undefined : slug[0];
-    const {data: note} = useQuery({
-        queryKey: ['noteTag', category],
-        queryFn: () => fetchNoteByTag(category),
-        refetchOnMount: false,
-    });
-    if (!note || note?.notes.length === 0) {
-            return <p>No notes found.</p>
-        }
-        
-        return <NoteList data={note.notes} />
+export default function NoteFilterClient({ tag }: Prop) {
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState("");
+  const [isModal, setIsModal] = useState(false);
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["noteTag", tag, query, page],
+    queryFn: () =>
+      fetchNotes({
+        tag,
+        query,
+        page,
+      }),
+    refetchOnMount: false,
+    placeholderData: keepPreviousData,
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+
+  return (
+    <>
+      <div className={css.app}>
+        <header className={css.toolbar}>
+          <SearchBox
+            setQuery={(value) => {
+              setQuery(value);
+              setPage(1);
+            }}
+          />
+          {data && data?.totalPages > 1 && (
+            <Pagination
+              totalPages={data.totalPages}
+              page={page}
+              setPage={setPage}
+            />
+          )}
+          <button onClick={() => setIsModal(true)} className={css.button}>
+            Create note +
+          </button>
+        </header>
+        {data && <NoteList data={data?.notes} />}
+      </div>
+      {isModal && <AddNoteModal closeModal={() => setIsModal(false)} />}
+      <Toaster />
+    </>
+  );
 }

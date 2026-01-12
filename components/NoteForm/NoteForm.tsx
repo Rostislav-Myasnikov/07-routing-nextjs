@@ -26,7 +26,7 @@ export default function NoteForm({ onClose }: NoteFormProp) {
     onSuccess: () => {
       toast.success("Note created successfully");
       onClose();
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
+      queryClient.invalidateQueries({ queryKey: ["noteTag"] });
     },
     onError: () => toast.error("something happened"),
   });

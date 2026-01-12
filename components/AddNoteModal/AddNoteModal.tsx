@@ -15,7 +15,7 @@ const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       closeModal();
     }
-}
+} 
 
  useEffect(() => {
 	  const handleKeyDown = (e: KeyboardEvent) => {
