@@ -1,5 +1,5 @@
 import { fetchNoteByTag } from "@/lib/api"
-import NoteFilterClient from "./Notes.client";
+import NoteFilterClient from "./Note.client";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 
 type Prop = {
