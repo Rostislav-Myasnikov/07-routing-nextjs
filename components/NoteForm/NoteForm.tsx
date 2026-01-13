@@ -44,8 +44,7 @@ export default function NoteForm({ onClose }: NoteFormProp) {
       .min(3, "Name must be at least 3 characters")
       .max(50, "Name is too long")
       .required("Title is required"),
-    content: Yup.string()
-      .max(500, "Content is too long"),
+    content: Yup.string().max(500, "Content is too long"),
     tag: Yup.string()
       .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"])
       .required("You need to select a tag"),

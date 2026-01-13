@@ -16,22 +16,22 @@ export default function SidebarNotes() {
       </li>
       <li className={css.menuItem}>
         <Link href={`/notes/filter/Personal`} className={css.menuLink}>
-        Personal
+          Personal
         </Link>
       </li>
       <li className={css.menuItem}>
         <Link href={`/notes/filter/Meeting`} className={css.menuLink}>
-        Meeting
+          Meeting
         </Link>
       </li>
       <li className={css.menuItem}>
         <Link href={`/notes/filter/Shopping`} className={css.menuLink}>
-        Shopping
+          Shopping
         </Link>
       </li>
       <li className={css.menuItem}>
         <Link href={`/notes/filter/Todo`} className={css.menuLink}>
-        Todo
+          Todo
         </Link>
       </li>
     </ul>

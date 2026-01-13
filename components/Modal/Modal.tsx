@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import css from "./Modal.module.css";
 import { useEffect } from "react";
@@ -8,36 +8,35 @@ type Prop = {
   onClose: () => void;
 };
 
-export default function Modal({children, onClose}:Prop) {
-
+export default function Modal({ children, onClose }: Prop) {
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       onClose();
     }
-}
+  };
 
- useEffect(() => {
-	  const handleKeyDown = (e: KeyboardEvent) => {
-	    if (e.key === "Escape") {
-	      onClose();
-	    }
-	  };
-	
-	  document.addEventListener("keydown", handleKeyDown);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
-	
-	  return () => {
-	    document.removeEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
-	  };
-	}, [onClose]);
+    };
+  }, [onClose]);
 
   return (
-  <div className={css.backdrop} onClick={handleBackdropClick}>
-  <div className={css.modal}>
-    {children}
-    <button onClick={close}>Close</button>
-  </div>
-  </div>
-  )
+    <div className={css.backdrop} onClick={handleBackdropClick}>
+      <div className={css.modal}>
+        {children}
+        <button onClick={close}>Close</button>
+      </div>
+    </div>
+  );
 }

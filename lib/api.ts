@@ -60,4 +60,3 @@ export async function fetchNoteById(id: string): Promise<Note> {
   });
   return res.data;
 }
-
